@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визитка</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #ff6b35;
+            --secondary: #f7931e;
+            --accent: #00d4ff;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+            --shadow: rgba(255, 107, 53, 0.3);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        /* Floating background shapes */
+        .bg-shape {
+            position: fixed;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 20s infinite ease-in-out;
+            z-index: 0;
+        }
+        
+        .bg-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            background: var(--accent);
+            top: -100px;
+            left: -100px;
+            animation-delay: 0s;
+        }
+        
+        .bg-shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            bottom: -50px;
+            right: -50px;
+            animation-delay: 5s;
+        }
+        
+        .bg-shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            background: var(--secondary);
+            top: 50%;
+            right: 10%;
+            animation-delay: 10s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 20px) scale(0.9); }
+            75% { transform: translate(20px, 30px) scale(1.05); }
+        }
+        
+        .card-container {
+            position: relative;
+            z-index: 1;
+            perspective: 1000px;
+        }
+        
+        .business-card {
+            background: white;
+            border-radius: 30px;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3),
+                        0 0 0 8px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+            animation: cardEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 0;
+        }
+        
+        @keyframes cardEntrance {
+            from {
+                opacity: 0;
+                transform: translateY(50px) rotateX(-15deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+        
+        .business-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            animation: shimmer 3s infinite linear;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInUp 0.8s ease 0.3s backwards;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .avatar-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 25px;
+            position: relative;
+            animation: rotateIn 1s ease 0.5s backwards;
+        }
+        
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-180deg) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0) scale(1);
+            }
+        }
+        
+        .avatar {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            box-shadow: 0 10px 30px var(--shadow);
+            position: relative;
+            z-index: 2;
+            transition: transform 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .avatar-text {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .avatar:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .avatar::before {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .avatar:hover::before {
+            opacity: 1;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0; }
+        }
+        
+        .name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .title {
+            font-size: 1.2rem;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 15px;
+        }
+        
+        .bio {
+            color: #777;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .contact-info {
+            margin: 35px 0;
+            animation: fadeInUp 0.8s ease 0.6s backwards;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            margin: 12px 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+        
+        .contact-item:hover {
+            background: white;
+            border-color: var(--primary);
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(255, 107, 53, 0.2);
+        }
+        
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 15px;
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-item:hover i {
+            transform: rotate(360deg) scale(1.2);
+        }
+        
+        .contact-text {
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.8s backwards;
+        }
+        
+        .social-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--accent), var(--primary));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .social-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .social-btn i {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-5px) rotate(360deg);
+            box-shadow: 0 10px 25px var(--shadow);
+        }
+        
+        .divider {
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            margin: 30px 0;
+            border-radius: 2px;
+            animation: fadeIn 0.8s ease 0.5s backwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Floating particles */
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleFloat 4s infinite ease-in-out;
+        }
+        
+        @keyframes particleFloat {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(50px);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .business-card {
+                padding: 40px 30px;
+            }
+            
+            .name {
+                font-size: 2rem;
+            }
+            
+            .title {
+                font-size: 1rem;
+            }
+            
+            .avatar-container {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .avatar {
+                font-size: 40px;
+            }
+        }
+        
+        /* Easter egg - tilt effect */
+        .business-card.tilt {
+            transition: transform 0.1s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background shapes -->
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+    <div class="bg-shape"></div>
+    
+    <div class="card-container">
+        <div class="business-card" id="businessCard">
+            
+            <div class="profile-section">
+                <div class="avatar-container">
+                    <div class="avatar" id="avatarContainer">
+                        <!-- Замени src на путь к своей картинке, например: src="photo.jpg" или src="https://example.com/photo.jpg" -->
+                        <!-- Если не хочешь картинку, просто удали тег <img> и останутся инициалы -->
+                        <img src="DSCF3783.JPG" alt="Фото" style="">
+                        <span class="avatar-text" id="avatarText"></span>
+                    </div>
+                </div>
+                <h1 class="name">Артём Глушков</h1>
+                <p class="title">Студент-медик | креативный продюсер фембоев | Creative Designer</p>
+                <p class="bio">
+                    Создаю слоп контент в интеретах и, вроде как, пока учусь на меде.
+                </p>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="contact-info">
+                <div class="contact-item" onclick="window.location.href='mailto:artem46474@yandex.ru'">
+                    <i class="bi bi-envelope-fill"></i>
+                    <span class="contact-text">artem46474@yandex.ru</span>
+                </div>
+                
+                <div class="contact-item" onclick="window.location.href='tel:+79178578812'">
+                    <i class="bi bi-telephone-fill"></i>
+                    <span class="contact-text">+7 (917) 857-88-12</span>
+                </div>
+            </div>
+            
+            <div class="divider"></div>
+            
+            <div class="social-links">
+                <a href="https://github.com/yourname" class="social-btn" target="_blank" title="GitHub">
+                    <i class="bi bi-github"></i>
+                </a>
+                <a href="https://linkedin.com/in/yourname" class="social-btn" target="_blank" title="LinkedIn">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="https://twitter.com/yourname" class="social-btn" target="_blank" title="Twitter">
+                    <i class="bi bi-twitter-x"></i>
+                </a>
+                <a href="https://instagram.com/yourname" class="social-btn" target="_blank" title="Instagram">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="https://t.me/yourname" class="social-btn" target="_blank" title="Telegram">
+                    <i class="bi bi-telegram"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap JS -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Show image if src is provided
+        const avatarImg = document.querySelector('.avatar img');
+        const avatarText = document.getElementById('avatarText');
+        
+        if (avatarImg && avatarImg.src && avatarImg.src !== window.location.href) {
+            avatarImg.style.display = 'block';
+            avatarText.style.display = 'none';
+        }
+        
+        // Tilt effect on mouse move
+        const card = document.getElementById('businessCard');
+        const container = document.querySelector('.card-container');
+        
+        container.addEventListener('mousemove', (e) => {
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+        });
+        
+        container.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+        });
+        
+        // Particle effect on card hover
+        card.addEventListener('mouseenter', createParticles);
+        
+        function createParticles() {
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = Math.random() * 100 + '%';
+                    particle.style.bottom = '0';
+                    particle.style.animationDelay = Math.random() * 2 + 's';
+                    card.appendChild(particle);
+                    
+                    setTimeout(() => particle.remove(), 4000);
+                }, i * 200);
+            }
+        }
+        
+        // Copy to clipboard on contact click
+        const contactItems = document.querySelectorAll('.contact-item');
+        contactItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (!this.getAttribute('onclick')) {
+                    const text = this.querySelector('.contact-text').textContent;
+                    navigator.clipboard.writeText(text).then(() => {
+                        // Visual feedback
+                        const originalBg = this.style.background;
+                        this.style.background = 'linear-gradient(135deg, var(--accent), var(--primary))';
+                        this.querySelector('.contact-text').textContent = 'Скопировано!';
+                        
+                        setTimeout(() => {
+                            this.style.background = originalBg;
+                            this.querySelector('.contact-text').textContent = text;
+                        }, 1500);
+                    });
+                }
+            });
+        });
+        
+        // Easter egg: double click for confetti
+        let clickCount = 0;
+        card.addEventListener('click', () => {
+            clickCount++;
+            if (clickCount === 3) {
+                createConfetti();
+                clickCount = 0;
+            }
+            setTimeout(() => clickCount = 0, 1000);
+        });
+        
+        function createConfetti() {
+            const colors = ['#ff6b35', '#f7931e', '#00d4ff', '#667eea', '#764ba2'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.style.position = 'fixed';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.top = '-10px';
+                    confetti.style.width = '10px';
+                    confetti.style.height = '10px';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.pointerEvents = 'none';
+                    confetti.style.zIndex = '9999';
+                    confetti.style.animation = 'confettiFall 3s ease-out forwards';
+                    document.body.appendChild(confetti);
+                    
+                    setTimeout(() => confetti.remove(), 3000);
+                }, i * 30);
+            }
+        }
+        
+        // Add confetti animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes confettiFall {
+     
